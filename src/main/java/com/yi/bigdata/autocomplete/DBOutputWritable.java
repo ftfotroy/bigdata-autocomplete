@@ -1,3 +1,5 @@
+package com.yi.bigdata.autocomplete;
+
 import org.apache.hadoop.mapreduce.lib.db.DBWritable;
 
 import java.sql.PreparedStatement;

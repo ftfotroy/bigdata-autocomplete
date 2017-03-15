@@ -10,7 +10,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-mapreduce-client-core</artifactId>

@@ -1,9 +1,10 @@
+package com.yi.bigdata.autocomplete;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.log4j.Logger;
 
@@ -11,9 +12,9 @@ import java.io.IOException;
 
 
 public class NGramLibraryBuilder {
-	private static Logger logger = Logger.getLogger(NGramLibraryBuilder.class);
-	public static class NGramMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
+	public static class NGramMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+		private static Logger logger = Logger.getLogger(NGramMapper.class);
 		int noGram;
 		@Override
 		public void setup(Context context) {
@@ -27,12 +28,13 @@ public class NGramLibraryBuilder {
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 			logger.info("NGramLibraryBuilder: NgramMapper: ngram mapper started");
 			String line = value.toString().trim().toLowerCase();
-
+			System.out.println("#NGramLibraryBuilder: NgramMapper: read line:" + line);
 			//remove useless elements
 			line = line.replaceAll("[^a-z]", " ");
 
 			//separate word by space
 			String[] words = line.split("\\s+");
+			System.out.println(words.length);
 
 			//build n-gram based on array of words
 			if (words.length < 2) {
@@ -46,6 +48,7 @@ public class NGramLibraryBuilder {
 					sb.append(words[i + j]);
 					String str = sb.toString().trim();
 					logger.debug("NGramLibraryBuilder: NgramMapper: ngram result string: " + str);
+					System.out.println("NGramLibraryBuilder: NgramMapper: ngram result string:" + str);
 					context.write(new Text(str), new IntWritable(1));
 				}
 			}
